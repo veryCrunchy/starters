@@ -1,17 +1,4 @@
-/* eslint-disable no-useless-escape */
-export interface ExtensionSeoMetadata {
-    title?: string;
-    meta_description?: string;
-    og_image?: string;
-    additional_fields?: Record<string, unknown>;
-    sitemap?: {
-        change_frequency: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
-        priority: string;
-    };
-    no_index?: boolean;
-    no_follow?: boolean;
-}
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface BlockButton {
 	/** @required */
 	id: string;
@@ -225,10 +212,7 @@ export interface Globals {
 	/** @required */
 	id: string;
 	/** @description Social media profile URLs */
-	social_links?: Array<{
-		service: 'facebook' | 'instagram' | 'linkedin' | 'twitter' | 'vimeo' | 'youtube' | 'github' | 'discord' | 'docker';
-		url: string;
-	}> | null;
+	social_links?: any | null;
 	/** @description Short phrase describing the site. */
 	tagline?: string | null;
 	/** @description Main site title */
@@ -310,7 +294,8 @@ export interface Page {
 	status?: 'draft' | 'in_review' | 'published';
 	/** @description Publish now or schedule for later. */
 	published_at?: string | null;
-	seo?: ExtensionSeoMetadata | null;
+	seo?: any | null;
+	description?: string | null;
 	/** @description Create and arrange different content blocks (like text, images, or videos) to build your page. */
 	blocks?: PageBlock[] | string[];
 }
@@ -335,7 +320,7 @@ export interface Post {
 	author?: DirectusUser | string | null;
 	/** @description Publish now or schedule for later. */
 	published_at?: string | null;
-	seo?: ExtensionSeoMetadata | null;
+	seo?: any | null;
 }
 
 export interface DirectusAccess {
@@ -577,10 +562,25 @@ export interface DirectusSettings {
 		| `/(?=^.{8,}$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+}{\';\'?>.<,])(?!.*\\s).*$/`
 		| null;
 	storage_asset_transform?: 'all' | 'none' | 'presets' | null;
-	storage_asset_presets?: Array<{ key: string; fit: 'contain' | 'cover' | 'inside' | 'outside'; width: number; height: number; quality: number; withoutEnlargement: boolean; format: 'auto' | 'jpeg' | 'png' | 'webp' | 'tiff' | 'avif'; transforms: any }> | null;
+	storage_asset_presets?: Array<{
+		key: string;
+		fit: 'contain' | 'cover' | 'inside' | 'outside';
+		width: number;
+		height: number;
+		quality: number;
+		withoutEnlargement: boolean;
+		format: 'auto' | 'jpeg' | 'png' | 'webp' | 'tiff' | 'avif';
+		transforms: any;
+	}> | null;
 	custom_css?: string | null;
 	storage_default_folder?: DirectusFolder | string | null;
-	basemaps?: Array<{ name: string; type: 'raster' | 'tile' | 'style'; url: string; tileSize: number; attribution: string }> | null;
+	basemaps?: Array<{
+		name: string;
+		type: 'raster' | 'tile' | 'style';
+		url: string;
+		tileSize: number;
+		attribution: string;
+	}> | null;
 	mapbox_key?: string | null;
 	module_bar?: any | null;
 	project_descriptor?: string | null;
@@ -827,54 +827,4 @@ export interface Schema {
 	directus_translations: DirectusTranslation[];
 	directus_versions: DirectusVersion[];
 	directus_extensions: DirectusExtension[];
-}
-
-export enum CollectionNames {
-	block_button = 'block_button',
-	block_button_group = 'block_button_group',
-	block_form = 'block_form',
-	block_gallery = 'block_gallery',
-	block_gallery_items = 'block_gallery_items',
-	block_hero = 'block_hero',
-	block_posts = 'block_posts',
-	block_pricing = 'block_pricing',
-	block_pricing_cards = 'block_pricing_cards',
-	block_richtext = 'block_richtext',
-	form_fields = 'form_fields',
-	forms = 'forms',
-	form_submissions = 'form_submissions',
-	form_submission_values = 'form_submission_values',
-	globals = 'globals',
-	navigation = 'navigation',
-	navigation_items = 'navigation_items',
-	page_blocks = 'page_blocks',
-	pages = 'pages',
-	posts = 'posts',
-	directus_access = 'directus_access',
-	directus_activity = 'directus_activity',
-	directus_collections = 'directus_collections',
-	directus_comments = 'directus_comments',
-	directus_fields = 'directus_fields',
-	directus_files = 'directus_files',
-	directus_folders = 'directus_folders',
-	directus_migrations = 'directus_migrations',
-	directus_permissions = 'directus_permissions',
-	directus_policies = 'directus_policies',
-	directus_presets = 'directus_presets',
-	directus_relations = 'directus_relations',
-	directus_revisions = 'directus_revisions',
-	directus_roles = 'directus_roles',
-	directus_sessions = 'directus_sessions',
-	directus_settings = 'directus_settings',
-	directus_users = 'directus_users',
-	directus_webhooks = 'directus_webhooks',
-	directus_dashboards = 'directus_dashboards',
-	directus_panels = 'directus_panels',
-	directus_notifications = 'directus_notifications',
-	directus_shares = 'directus_shares',
-	directus_flows = 'directus_flows',
-	directus_operations = 'directus_operations',
-	directus_translations = 'directus_translations',
-	directus_versions = 'directus_versions',
-	directus_extensions = 'directus_extensions'
 }
