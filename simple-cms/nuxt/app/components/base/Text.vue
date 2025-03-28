@@ -1,20 +1,17 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { useRuntimeConfig, navigateTo } from '#app';
-
 interface ProseProps {
 	content: string;
 	size?: 'sm' | 'md' | 'lg';
+	itemId?: string;
+	collection?: string;
 }
-
 withDefaults(defineProps<ProseProps>(), {
 	size: 'md',
 });
-
-const config = useRuntimeConfig();
 const contentEl = ref<HTMLElement | null>(null);
 
 onMounted(() => {
+	const config = useRuntimeConfig();
 	if (!contentEl.value) return;
 
 	const anchors = Array.from(contentEl.value.getElementsByTagName('a'));
@@ -29,7 +26,11 @@ onMounted(() => {
 		if (isLocal) {
 			anchor.addEventListener('click', (e) => {
 				e.preventDefault();
-				navigateTo({ path: url.pathname, hash: url.hash, query: Object.fromEntries(url.searchParams.entries()) });
+				navigateTo({
+					path: url.pathname,
+					hash: url.hash,
+					query: Object.fromEntries(url.searchParams.entries()),
+				});
 			});
 		} else {
 			anchor.setAttribute('target', '_blank');

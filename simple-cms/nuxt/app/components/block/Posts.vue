@@ -55,17 +55,42 @@ function handlePageChange(page: number) {
 		router.push({ query: { page } });
 	}
 }
+
+const { setAttr } = useVisualEditing();
 </script>
 
 <template>
 	<div>
-		<Tagline v-if="data?.tagline" :tagline="data.tagline" />
-		<Headline v-if="data?.headline" :headline="data.headline" />
+		<Tagline
+			v-if="data.tagline"
+			:tagline="data.tagline"
+			:data-directus="
+				setAttr({
+					collection: 'block_posts',
+					item: data.id,
+					fields: 'tagline',
+					mode: 'popover',
+				})
+			"
+		/>
+		<Headline
+			v-if="data.headline"
+			:headline="data.headline"
+			:data-directus="setAttr({ collection: 'block_posts', item: data.id, fields: 'headline', mode: 'popover' })"
+		/>
 
-		<p v-if="error" class="text-center text-red-500">{{ error }}</p>
-
-		<div class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-			<template v-if="posts">
+		<div
+			class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
+			:data-directus="
+				setAttr({
+					collection: 'block_posts',
+					item: data.id,
+					fields: ['collection', 'limit'],
+					mode: 'popover',
+				})
+			"
+		>
+			<template v-if="posts?.length">
 				<NuxtLink
 					v-for="post in posts"
 					:key="post.id"
@@ -75,7 +100,7 @@ function handlePageChange(page: number) {
 					<div class="relative w-full h-[256px] overflow-hidden rounded-lg">
 						<DirectusImage
 							v-if="post.image"
-							:uuid="post.image"
+							:uuid="typeof post.image === 'string' ? post.image : post.image?.id"
 							:alt="post.title"
 							class="w-full h-full object-cover rounded-lg transition-transform duration-300 group-hover:scale-110"
 							sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

@@ -5,7 +5,6 @@ interface CustomFormData {
 	headline: string | null;
 	form: CustomForm;
 }
-
 interface CustomForm {
 	id: string;
 	on_success?: 'redirect' | 'message' | null;
@@ -18,17 +17,49 @@ interface CustomForm {
 	fields: FormField[];
 }
 
-const props = defineProps<{
-	data: CustomFormData;
-}>();
-
-const { tagline, headline, form } = props.data;
+const { setAttr } = useVisualEditing();
+defineProps<{ data: CustomFormData }>();
 </script>
 
 <template>
-	<section v-if="form" class="mx-auto">
-		<Tagline v-if="tagline" :tagline="tagline" />
-		<Headline v-if="headline" :headline="headline" />
-		<FormBuilder :form="form" class="mt-8" />
+	<section v-if="data.form" class="mx-auto">
+		<Tagline
+			v-if="data.tagline"
+			:tagline="data.tagline"
+			:data-directus="
+				setAttr({
+					collection: 'block_form',
+					item: data.id,
+					fields: 'tagline',
+					mode: 'popover',
+				})
+			"
+		/>
+
+		<Headline
+			v-if="data.headline"
+			:headline="data.headline"
+			:data-directus="
+				setAttr({
+					collection: 'block_form',
+					item: data.id,
+					fields: 'headline',
+					mode: 'popover',
+				})
+			"
+		/>
+
+		<div
+			:data-directus="
+				setAttr({
+					collection: 'block_form',
+					item: data.id,
+					fields: ['form'],
+					mode: 'popover',
+				})
+			"
+		>
+			<FormBuilder :form="data.form" class="mt-8" />
+		</div>
 	</section>
 </template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { ZoomIn, ArrowLeft, ArrowRight, X } from 'lucide-vue-next';
 
 interface GalleryItem {
@@ -10,6 +9,7 @@ interface GalleryItem {
 
 interface GalleryProps {
 	data: {
+		id: string;
 		tagline?: string;
 		headline?: string;
 		items: GalleryItem[];
@@ -22,7 +22,7 @@ const isLightboxOpen = ref(false);
 const currentIndex = ref(0);
 
 const sortedItems = computed(() => {
-	if (!props.data?.items) return [];
+	if (!props.data.items) return [];
 	return [...props.data.items].sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0));
 });
 
@@ -31,8 +31,7 @@ const currentItem = computed(() => {
 		return null;
 	}
 
-	const item = sortedItems.value[currentIndex.value];
-	return item;
+	return sortedItems.value[currentIndex.value];
 });
 
 function handleOpenLightbox(index: number) {
@@ -70,6 +69,8 @@ function handleKeyDown(e: KeyboardEvent) {
 	}
 }
 
+const { setAttr } = useVisualEditing();
+
 onMounted(() => {
 	window.addEventListener('keydown', handleKeyDown);
 });
@@ -81,10 +82,22 @@ onUnmounted(() => {
 
 <template>
 	<section class="relative">
-		<Tagline v-if="props.data.tagline" :tagline="props.data.tagline" />
-		<Headline v-if="props.data.headline" :headline="props.data.headline" />
+		<Tagline
+			v-if="data.tagline"
+			:tagline="data.tagline"
+			:data-directus="setAttr({ collection: 'block_gallery', item: data.id, fields: 'tagline', mode: 'popover' })"
+		/>
+		<Headline
+			v-if="data.headline"
+			:headline="data.headline"
+			:data-directus="setAttr({ collection: 'block_gallery', item: data.id, fields: 'headline', mode: 'popover' })"
+		/>
 
-		<div v-if="sortedItems.length" class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+		<div
+			v-if="sortedItems.length"
+			class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
+			:data-directus="setAttr({ collection: 'block_gallery', item: data.id, fields: 'items', mode: 'modal' })"
+		>
 			<div
 				v-for="(item, index) in sortedItems"
 				:key="item.id"
@@ -112,11 +125,11 @@ onUnmounted(() => {
 				class="flex max-w-full max-h-full items-center justify-center p-2 bg-transparent border-none z-50"
 				hideCloseButton
 			>
-				<DialogTitle className="sr-only">Gallery Image</DialogTitle>
-				<DialogDescription className="sr-only">
-					Viewing image {currentIndex + 1} of {sortedItems.length}.
+				<DialogTitle class="sr-only">Gallery Image</DialogTitle>
+				<DialogDescription class="sr-only">
+					Viewing image {{ currentIndex + 1 }} of {{ sortedItems.length }}.
 				</DialogDescription>
-				<DialogHeader></DialogHeader>
+				<DialogHeader />
 
 				<div class="relative w-[90vw] h-[90vh] flex items-center justify-center">
 					<DirectusImage

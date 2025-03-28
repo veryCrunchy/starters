@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import Hero from '~/components/block/Hero.vue';
 import RichText from '~/components/block/RichText.vue';
 import Gallery from '~/components/block/Gallery.vue';
@@ -16,6 +15,7 @@ interface BaseBlockProps {
 }
 
 const props = defineProps<BaseBlockProps>();
+const blockRef = ref<HTMLElement | null>(null);
 
 const components: Record<string, any> = {
 	block_hero: Hero,
@@ -27,8 +27,11 @@ const components: Record<string, any> = {
 };
 
 const Component = computed(() => components[props.block.collection] || null);
-const blockData = computed(() => props.block.item);
+const componentData = computed(() => props.block.item);
 </script>
+
 <template>
-	<component :is="Component" v-if="Component" :id="`block-${block.id}`" :data="blockData" />
+	<div ref="blockRef" class="relative">
+		<component :is="Component" v-if="Component" :id="`block-${block.id}`" :data="componentData" />
+	</div>
 </template>

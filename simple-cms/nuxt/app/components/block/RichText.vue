@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import Text from '~/components/base/Text.vue';
+
 interface RichTextProps {
 	data: {
+		id?: string;
 		tagline?: string;
 		headline?: string;
 		content?: string;
@@ -9,11 +12,13 @@ interface RichTextProps {
 	};
 }
 
-const props = withDefaults(defineProps<RichTextProps>(), {
+withDefaults(defineProps<RichTextProps>(), {
 	data: () => ({
 		alignment: 'left',
 	}),
 });
+
+const { setAttr } = useVisualEditing();
 </script>
 
 <template>
@@ -25,11 +30,44 @@ const props = withDefaults(defineProps<RichTextProps>(), {
 				'text-right': data.alignment === 'right',
 				'text-left': data.alignment === 'left',
 			},
-			props.data.className,
+			data.className,
 		]"
 	>
-		<Tagline v-if="data.tagline" :tagline="data.tagline" />
-		<Headline v-if="data.headline" :headline="data.headline" />
-		<Text v-if="data.content" :content="data.content" />
+		<Tagline
+			v-if="data.tagline"
+			:tagline="data.tagline"
+			:data-directus="
+				setAttr({
+					collection: 'block_richtext',
+					item: data.id,
+					fields: 'tagline',
+					mode: 'popover',
+				})
+			"
+		/>
+		<Headline
+			v-if="data.headline"
+			:headline="data.headline"
+			:data-directus="
+				setAttr({
+					collection: 'block_richtext',
+					item: data.id,
+					fields: 'headline',
+					mode: 'popover',
+				})
+			"
+		/>
+		<Text
+			v-if="data.content"
+			:content="data.content"
+			:data-directus="
+				setAttr({
+					collection: 'block_richtext',
+					item: data.id,
+					fields: 'content',
+					mode: 'popover',
+				})
+			"
+		/>
 	</div>
 </template>

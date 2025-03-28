@@ -1,29 +1,26 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
 import { buildZodSchema } from '~/lib/zodSchemaBuilder';
-import type { FormField as FormFieldType } from '@@/shared/types/schema';
-import FormField from './BaseFormField.vue';
+import type { FormField } from '#shared/types/schema';
+import BaseFormField from './BaseFormField.vue';
 import BaseButton from '../base/BaseButton.vue';
 
-interface Props {
-	fields: FormFieldType[];
+const props = defineProps<{
+	fields: FormField[];
 	onSubmit: (data: Record<string, any>) => Promise<void> | void;
 	submitLabel: string;
-}
+	formId?: string;
+}>();
 
-const props = defineProps<Props>();
 const isSubmitting = ref(false);
 
-const sortedFields = computed(() => {
-	return [...props.fields].sort((a, b) => (a.sort || 0) - (b.sort || 0));
-});
+const { setAttr } = useVisualEditing();
+
+const sortedFields = computed(() => [...props.fields].sort((a, b) => (a.sort || 0) - (b.sort || 0)));
 
 const validFields = computed(() =>
-	sortedFields.value.filter(
-		(field): field is FormFieldType & { name: string } => field.name != null && field.name !== '',
-	),
+	sortedFields.value.filter((field): field is FormField & { name: string } => field.name != null && field.name !== ''),
 );
 
 const schema = computed(() => {
@@ -38,7 +35,6 @@ const schema = computed(() => {
 
 const initialValues = computed(() => {
 	if (!validFields.value.length) return {};
-
 	return validFields.value.reduce(
 		(defaults, field) => {
 			const name = field.name;
@@ -76,7 +72,6 @@ const { handleSubmit, values } = useForm({
 
 const onSubmitForm = handleSubmit(async (formValues) => {
 	if (isSubmitting.value) return;
-
 	try {
 		isSubmitting.value = true;
 		await props.onSubmit(formValues);
@@ -87,18 +82,36 @@ const onSubmitForm = handleSubmit(async (formValues) => {
 </script>
 
 <template>
-	<form v-if="schema" :validation-schema="schema" :initial-values="initialValues" @submit.prevent="onSubmitForm">
+	<form
+		v-if="schema"
+		:validation-schema="schema"
+		:initial-values="initialValues"
+		:data-directus="
+			setAttr({
+				collection: 'forms',
+				item: props.formId,
+				fields: 'fields',
+				mode: 'popover',
+			})
+		"
+		@submit.prevent="onSubmitForm"
+	>
 		<div class="flex flex-wrap gap-4">
-			<FormField v-for="field in validFields" :key="field.id" :field="field" :model-value="values[field.name]" />
+			<div v-for="field in validFields" :key="field.id" class="w-full">
+				<BaseFormField :field="field" :model-value="values[field.name]" />
+			</div>
+
 			<div class="w-full">
-				<BaseButton
-					:id="`submit-${submitLabel.replace(/\s+/g, '-').toLowerCase()}`"
-					type="submit"
-					:label="submitLabel"
-					:disabled="isSubmitting"
-					icon="arrow"
-					icon-position="right"
-				/>
+				<div>
+					<BaseButton
+						:id="`submit-${submitLabel.replace(/\s+/g, '-').toLowerCase()}`"
+						type="submit"
+						:label="submitLabel"
+						:disabled="isSubmitting"
+						icon="arrow"
+						icon-position="right"
+					/>
+				</div>
 			</div>
 		</div>
 	</form>
