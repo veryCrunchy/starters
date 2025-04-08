@@ -28,7 +28,7 @@ export default defineNuxtConfig({
 
 	runtimeConfig: {
 		public: {
-			siteUrl: (process.env.NUXT_PUBLIC_SITE_URL as string) || 'https://directus-cms-nuxt.vercel.app',
+			siteUrl: process.env.NUXT_PUBLIC_SITE_URL as string,
 			directusUrl: process.env.DIRECTUS_URL as string,
 			enableVisualEditing: process.env.NUXT_PUBLIC_ENABLE_VISUAL_EDITING !== 'false',
 		},
@@ -52,8 +52,8 @@ export default defineNuxtConfig({
 			contentSecurityPolicy: {
 				'img-src': ["'self'", 'data:', '*'],
 				'script-src': ["'self'", "'unsafe-inline'", '*'],
-				'connect-src': ["'self'", process.env.DIRECTUS_URL!],
-				'frame-ancestors': ["'self'", process.env.DIRECTUS_URL!],
+				'connect-src': ["'self'", process.env.DIRECTUS_URL || ''],
+				'frame-ancestors': ["'self'", process.env.DIRECTUS_URL || ''],
 			},
 		},
 	},
@@ -82,7 +82,7 @@ export default defineNuxtConfig({
 	},
 
 	site: {
-		url: process.env.NUXT_PUBLIC_SITE_URL || 'https://directus-cms-nuxt.vercel.app',
+		url: process.env.NUXT_PUBLIC_SITE_URL as string,
 	},
 	vue: {
 		propsDestructure: true,
