@@ -1,5 +1,5 @@
 {
-  "name": "cms",
+  "name": "directus-cms-starter",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -7,7 +7,7 @@
   },
   "directus:template": {
     "name": "CMS",
-    "description": "The official CMS starter template for Directus",
+    "description": "A ready-to-use CMS with block builder, visual editing, and integration with your favorite framework. ",
     "template": "./directus/template",
     "frontends": {
         "nextjs": {
@@ -29,6 +29,5 @@
     }
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": ""
 }
