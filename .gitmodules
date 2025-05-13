@@ -1,0 +1,3 @@
+[submodule "cms/nuxt"]
+	path = cms/nuxt
+	url = https://github.com/veryCrunchy/nuxt-directus-base

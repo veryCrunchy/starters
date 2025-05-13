@@ -26,14 +26,14 @@ export default defineEventHandler(async (event) => {
 		);
 
 		const countPromise = directusServer.request(
-			readItems('posts', {
+			aggregate('posts', {
 				aggregate: { count: '*' },
 				filter: { status: { _eq: 'published' } },
 			}),
 		);
 
 		let [posts, count] = await Promise.all([postsPromise, countPromise]);
-
+		console.log();
 		return {
 			posts,
 			count: Number(count[0]?.count) || 0,

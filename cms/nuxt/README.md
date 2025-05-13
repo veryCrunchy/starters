@@ -1,190 +1,108 @@
-# Nuxt 3 Simple CMS Template with Directus Integration
+# Directus Starter Templates
 
-This is a **Nuxt 3-based Simple CMS Template** that is fully integrated with [Directus](https://directus.io/), offering
-a CMS solution for managing and delivering content seamlessly. The template leverages modern technologies like **Nuxt
-3's file-based routing system**, **Tailwind CSS**, and **Shadcn Vue components**, providing a complete and scalable
-starting point for building CMS-powered web applications.
+This repo provides a collection of starter templates for building web applications with Directus integration.
 
-## **Features**
+Each template is designed to be:
 
-- **Nuxt 3 File-Based Routing**: Uses Nuxt's built-in routing system with dynamic page handling.
-- **Full Directus Integration**: Directus API integration for fetching and managing relational data.
-- **Tailwind CSS**: Fully integrated for rapid UI styling.
-- **TypeScript**: Ensures type safety and reliable code quality.
-- **Shadcn Vue Components**: Pre-built, customizable UI components for modern design systems.
-- **ESLint & Prettier**: Enforces consistent code quality and formatting.
-- **Dynamic Page Builder**: A page builder interface for creating and customizing CMS-driven pages.
-- **Preview Mode**: Built-in draft/live preview for editing unpublished content.
-- **Optimized Dependency Management**: Project is set up with **pnpm** for faster and more efficient package management.
+- **Reusable**: Modular codebases that can be easily extended.
+- **Framework-Specific**: Tailored implementations for popular frameworks like Next.js, Nuxt.js, Svelte, and Astro.
+- **Scalable**: Suitable for small to medium projects and scalable to larger applications.
 
 ---
 
-## **Why pnpm?**
+## **Current and Upcoming Templates**
 
-This project uses `pnpm` for managing dependencies due to its speed and efficiency. If you’re familiar with `npm`,
-you’ll find `pnpm` very similar in usage. You can still use `npm` if you prefer by replacing `pnpm` commands with their
-`npm` equivalents.
-
----
-
-## **Draft Mode in Directus and Live Preview**
-
-### **Draft Mode Overview**
-
-Directus allows you to work on unpublished content using **Draft Mode**. This Nuxt 3 template is configured to support
-Directus Draft Mode out of the box, enabling live previews of unpublished or draft content as you make changes.
-
-### **Live Preview Setup**
-
-[Directus Live Preview](https://docs.directus.io/guides/headless-cms/live-preview/nuxt-3.html#set-up-live-preview-with-nuxt-3)
-
-- The live preview feature works seamlessly on deployed environments.
-- To preview content on **localhost**, use your browser’s preview mode or deploy your application to a staging
-  environment.
-- **Important Note**: Directus employs Content Security Policies (CSPs) that block live previews on `localhost` for
-  security reasons. For a smooth preview experience, deploy the application to a cloud environment and use the
-  deployment URL for Directus previews.
-
-### **Admin Bar**
-
-Allows authenticated users to easily navigate to their **Directus instance** to edit or create pages and posts directly
-from the frontend.
-
-#### How It Works
-
-By appending `?preview=true` to the URL, users enter **Admin Mode**, which:
-
-- Displays an admin bar at the top of the page.
-- Allows easy navigation to **edit** or **create** new posts/pages in Directus.
-- Requires authentication to access edit and new content buttons.
-
-#### Usage
-
-To enable the **Admin Bar**, simply append `?preview=true` to any URL:
-
-```plaintext
-https://yourwebsite.com/blog/some-post?preview=true
-```
+| Template             | Status         | Description                                  |
+| -------------------- | -------------- | -------------------------------------------- |
+| **CMS**       | 🚧 In Progress | A starter CMS template for managing content. |
+| **Headless eCommerce** | 🕒 Upcoming    | A template for building eCommerce solutions. |
 
 ---
 
 ## **Getting Started**
 
-### Prerequisites
+### **Using Directus with a Cloud Instance (Recommended)**
 
-To set up this template, ensure you have the following:
+1. **Create a New Project**:
 
-- **Node.js** (16.x or newer)
-- **npm** or **pnpm**
-- Access to a **Directus** instance ([cloud or self-hosted](../../README.md))
+   - Visit [Directus Cloud](https://directus.io/cloud/) and create a new project.
+   - During the setup process, be sure to select the appropriate template for your project (**CMS**, **Simple CRM**, or **Simple eCommerce**).
+   - Once started, it will take around 90 seconds for the Cloud Project to be created.
+   - You will receive an email with your project URL, email, and password for logging in.
+   - If you used GitHub to create your account, this will be your GitHub email.
 
-## ⚠️ Directus Setup Instructions
+2. **Access Your New Project**:
 
-For instructions on setting up Directus, choose one of the following:
+   - Log in to your project using the URL provided in your email or from the Directus Cloud Dashboard.
 
-- [Setting up Directus Cloud](https://github.com/directus-labs/starters?tab=readme-ov-file#using-directus-with-a-cloud-instance-recommended)
-- [Setting up Directus Self-Hosted](https://github.com/directus-labs/starters?tab=readme-ov-file#using-directus-locally)
+3. **Select a Template**:
+   - Navigate to the folder for the framework you want to use in this repo.
+   - Follow the instructions in that template's README to set up your application and connect it to your cloud instance.
 
-### **Environment Variables**
+---
 
-To get started, you need to configure environment variables. Follow these steps:
+### **Using Directus Locally**
 
-1. **Copy the example environment file:**
+For local development, follow these steps:
 
-   ```bash
-   cp .env.example .env
-   ```
+1. **Install Docker**:
 
-2. **Update the following variables in your `.env` file:**
+   - Ensure Docker is installed and running on your machine: [Download Docker](https://www.docker.com/products/docker-desktop).
 
-   - **`DIRECTUS_URL`**: URL of your Directus instance.
-   - **`DIRECTUS_SERVER_TOKEN`**: Public token for accessing public resources in Directus. Use the token from the
-     **Webmaster** account.
-   - **`DIRECTUS_FORM_TOKEN`**: Token from the **Frontend Bot User** account in Directus for handling form submissions.
-   - **`NUXT_PUBLIC_SITE_URL`**: The public URL of your site. This is used for SEO metadata and blog post routing.
-   - **`NUXT_PUBLIC_ENABLE_VISUAL_EDITING`**: Enable or disable visual editing in Directus
+2. **Clone the Template You Want**:
 
-## **Running the Application**
+   - Select the template folder for your chosen framework (e.g., `simple-cms`) and clone it:
+     ```bash
+     git clone https://github.com/your-org/starters.git simple-cms
+     cd simple-cms
+     ```
 
-### Local Development
+3. **Navigate to the `directus/` Folder**:
 
-1. Install dependencies:
+   - Inside your cloned template folder, navigate to the `directus/` folder:
+     ```bash
+     cd directus
+     ```
 
-   ```bash
-   pnpm install
-   ```
+4. **Start Directus**:
 
-   _(You can also use `npm install` if you prefer.)_
+   - Run Docker Compose to start the Directus instance:
 
-2. Start the development server:
+     ```bash
+     docker-compose up -d
+     ```
 
-   ```bash
-   pnpm run dev
-   ```
+   - This will start Directus on [http://localhost:8055](http://localhost:8055). Use the following credentials to log in:
+     - **Admin Email**: `admin@example.com`
+     - **Admin Password**: `d1r3ctu5`
 
-3. Visit [http://localhost:3000](http://localhost:3000).
+5. **Apply a Template**:
 
-## Generate Directus Types
+   - Use the [Directus Template CLI](https://github.com/directus-labs/directus-template-cli) to apply a pre-configured template for your project. Follow these steps:
 
-This repository includes a [utility](https://www.npmjs.com/package/directus-sdk-typegen) to generate TypeScript types
-for your Directus schema.
+     1. \*\*Generate a static token for the admin user:
 
-#### Usage
+        - Go to the **Users Directory**
+        - Choose the Administrative User
+        - Scroll down to the **Token** field and generate a static token.
+        - Copy the token and save it. **Do not forget to save the user**, or you will encounter an "Invalid token" error.
 
-1. Ensure your `.env` file is configured as described above.
-2. Run the following command:
-   ```bash
-   pnpm run generate:types
-   ```
+     2. **Run the Template CLI Tool**:
 
-## Folder Structure
+        - Open your terminal, run the following command, and follow the prompts:
+          ```bash
+          npx directus-template-cli@latest apply
+          ```
 
-```
-app/                          # Main Nuxt application folder
-│
-├── assets/                   # Static assets like images and stylesheets
-│   ├── css/
-│   ├── images/
-│
-├── components/               # Vue components
-│   ├── base/                 # Common reusable base components
-│   ├── block/                # CMS-driven blocks like Hero, Gallery, etc.
-│   ├── forms/                # Form components and field inputs
-│   │   ├── fields/
-│   ├── shared/               # Shared utilities like AdminBar, DirectusImage
-│   ├── ui/                   # Shadcn UI components
-│   ├── Footer.vue
-│   ├── NavigationBar.vue
-│   ├── PageBuilder.vue       # Assembles CMS-driven blocks into pages
-│
-├── layouts/                  # Nuxt layouts for structuring pages
-│   ├── default.vue
-│
-├── lib/                      # Utility functions and helper scripts
-│   ├── zodSchemaBuilder.ts   # Schema validation with Zod
-│
-├── pages/
-│   ├── blog/
-│   │   ├── [slug].vue        # Dynamic blog post route
-│   ├── [...permalink].vue    # Catch-all route for dynamic pages
-│
-├── public/                   # Publicly accessible assets
-│   ├── icons/
-│   ├── images/
-│
-├── scripts/
-│   ├── generate-types.ts     # Script to generate Directus types
-│
-├── server/
-│   ├── api/                  # API routes for interacting with Directus
-│   │   ├── forms/submit.ts    # Handles form submissions
-│   │   ├── posts/[slug]/index.ts  # Fetches individual posts
-│   │   ├── search/index.ts    # Search functionality
-│   │   ├── users/[id].ts      # Fetches user data
-│   │   ├── authenticated-user.ts  # Auth check endpoint
-│   ├── utils/                 # Backend utilities
-│   │   ├── directus-server.ts # Directus server-side utilities
-│   │   ├── directus-utils.ts  # General Directus helpers
-│   ├── shared/                # Shared backend logic
-│   │   ├── types/schema.ts    # Directus schema types
-```
+     3. **Follow the Prompts**:
+
+        - Choose `Community templates`
+        - Select the template from the list to apply (**Simple Website CMS**, **Simple CRM**, or **Simple eCommerce**)
+        - Fill in your Directus URL
+          ```bash
+          http://localhost:8055
+          ```
+        - Select `Directus Access Token`
+        - Fill in the token you saved from Step 1
+
+---

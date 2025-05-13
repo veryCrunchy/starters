@@ -36,7 +36,6 @@ const author = computed(() => post.value?.author as Partial<DirectusUser>);
 onMounted(() => {
 	if (!isVisualEditingEnabled.value) return;
 	apply({
-		directusUrl,
 		onSaved: () => refresh(),
 	});
 });

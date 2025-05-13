@@ -1,6 +1,5 @@
-# Nuxt Build Output
-.nuxt/
-.nitro/
-.cache/
-.output/
-dist/
+.env
+.DS_Store
+node_modules
+.vscode
+**/logs/
